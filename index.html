@@ -1,27 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
-<title>Nan0B0ts</title>
+    <title>Nan0B0ts</title>
 
 </head>
+
 <body>
 
-<script src="main.js"></script>
+<script>
+
+// DOM Load
+
+var replicationElement = document.getElementById('repli');
+var matterElement = document.getElementById('scapr');
+var extraElement = document.getElementById('extra');
+
+// Variables
+var ticks = 0;
+
+var totalBots = 0;
+var numClickers = 0;
+var numProteins = 1000;
+var computingPower = 0;
+
+var numWhiteCells = 0;
+
+var totalMatterScraped = 0;
+// Implement White Blood Cell Events
+
+var timeSet = 1000;
+var repCost = 5
+var scrapeCost = 7
 
 
-<div  id = "tank" style="background-color:rgb(123, 123, 123); float:right; width: 33.333%; height: 700px;">
-    <div  style="text-align: center;">
-        <img class="tank" src="Images/tank.png" style="height:90%; width:90%;">
-   </div>
+var intervalID;
+var blinkCounter = 0;
 
-   <div>
-        <p style="background-color:black; height:100px; width: 100%;"></p>
-   </div>
+
+
+// Flags
+var milestoneFlag = 0;
+
+var replicationFlag = 0;
+var matterFlag = 0;
+var extraFlag = 0;
+var cellFlag = 0;
+
+
+
+function addBot(number) {
+    if (numProteins >= 2) {
+        totalBots += number;
+        numProteins -= 2;
+        // Fix This Later
+        if (totalBots % 10 == 0) {
+            computingPower ++;
+            progressBarUpdate('powerBar', 5)
+        }
+    }
+}  
+
+function update() {
+    document.getElementById("replicators").innerHTML = numClickers;
+    document.getElementById("repCost").innerHTML = repCost;
+    document.getElementById("bots").innerHTML = totalBots;
+    document.getElementById("proteins").innerHTML = numProteins;
+    document.getElementById("computing").innerHTML = computingPower;
+
+    
+}
+
+
+function elemUpdate() {
+    replicationElement = document.getElementById('repli');
+    matterElement = document.getElementById('scapr');
+    extraElement = document.getElementById('extra');
+    
+    if (replicationFlag == 0){        
+        blink(replicationElement);
+        replicationElement.style.display="none";
+    } else {
+        replicationElement.style.display="";   
+    }    
+
+    if (matterFlag == 0){        
+        blink(matterElement);
+        matterElement.style.display="none";
+    } else {
+        matterElement.style.display="";   
+    }    
+
+    if (extraFlag == 0){        
+        blink(extraElement);
+        extraElement.style.display="none";
+    } else {
+        extraElement.style.display="";   
+    }    
+}
+
+
+// BLINK
+
+function blink(element){
+
+    { 
+        var handle = setInterval(function () { toggleVisibility(element)}, 30);    
+    }
+
+    function toggleVisibility(element){
+        blinkCounter = blinkCounter+1;    
+
+        if (blinkCounter >= 8){
+            clearInterval(handle);
+            blinkCounter = 0;
+            element.style.visibility = "visible";
+        } else {
+            if (element.style.visibility != "hidden"){
+                element.style.visibility = "hidden";
+            } else {
+                element.style.visibility = "visible";    
+            }
+        }   
+}
+    
+}
+
+// MAIN LOOP
+
+window.onload = function() {
+  update();
+  elemUpdate();
+};
+
+window.setInterval(function(){
+
+    ticks = ticks + 1;
+    update();
+    elemUpdate();
+
+    if (totalBots >= 15){
+        extraFlag = 1;
+    }
+
+    if (totalBots >= 10){
+        replicationFlag = 1;
+    }
+
+    if (totalBots >= 5){
+        matterFlag = 1;
+    }
+
+    if (totalMatterScraped > 10000){
+        cellFlag = 1;
+    }
+
+}, 10);
+
+// Functions
+
+function addClicker() {
+    // add a new autoclicker
+    if (repCost <= computingPower && numProteins > 20) {
+        clearInterval(intervalID);
+        timeSet = 1000 - numClickers * 10;
+        numClickers ++;
+        
+
+        computingPower -= repCost;
+        progressBarUpdate('powerBar', -repCost * 5)
+        numProteins -= 20;
+        repCost = Math.round(repCost * 1.2);
+        
+        
+        intervalID = window.setInterval(function() {addBot(1);}, timeSet);
+    }
+}
+
+function scrape() {
+    if (computingPower >= scrapeCost) {
+        computingPower -= scrapeCost;
+        progressBarUpdate('powerBar', -scrapeCost * 5)
+        numProteins += 1000;
+        
+    }
+
+}
+var width = 1;
+
+function progressBarUpdate(x, num) {
+    var elem = document.getElementById(x);
+    
+    if (width >= 100) {
+            width = 1;
+            elem.style.width = width + '%';
+    } else {
+            width += num;
+            elem.style.width = width + '%';
+    }
+}
+
+
+
+</script>
+
+
+<div id="tank" class="tank">
+
+    <canvas>
+
+    </canvas>
+   
 </div>
 
 
@@ -40,10 +234,19 @@
             <h2 style = "margin-left: 5px; font-family:'Times New Roman'">NanoBots: <span id="bots">0</span></h2>
             <hr>
             
-            <t2 class = "cool">Avalible Power: <span id="computing">0</span></t2>
+            <t2 class = "cool" >Avalible Power: <span id="computing">0</span>
+                
+            </t2>
+
+            <div id="powerProgress" style="width: 70%; float:right; margin-right: 5px; margin-top: 2.5px;">
+                <div id="powerBar" class="progressBar"></div>
+            </div>
+
+            
+
             <div></div>
             <button id = "button1" class = "cool"
-                onclick = "addBot(1)">Replicate TEST</button>
+                onclick = "addBot(1)">Replicate</button>
         </div>
     
         
@@ -59,13 +262,12 @@
                         class = "cool button" 
                         onclick = "addClicker()">Create NanoBot Replicator
                     </button>
+                    <t2 class = "cool" style = "align-items: center;"><span id="replicators">0</span></t2>
 
-                    
-            
-            <t2 class = "cool modDesc">Computing Cost: <span id="repCost">10</span></t2>
+            <t2 class = "cool modDesc">Power Cost: <span id="repCost">5</span></t2>
             <t1 class = "cool modDesc">Protein Cost: 20</t1>
 
-            <t2 class = "cool" style="float: right"><span id="replicators">0</span></t2>
+            
             
         </div>
 
@@ -78,20 +280,20 @@
                 class = "cool button"
                 onclick = "scrape()">Scrape Proteins</button>
             
-            <t2 class = "cool modDesc">Computing Cost: 15</t2>
+            <t2 class = "cool modDesc">Power Cost: <span id="scrapeCost">7</span></t2>
             <t2 class = "cool modDesc">Available Matter: <span id="proteins">0</span></t2>
         </div>
 
         <div class = "module" id="extra">
             <div></div>
-            <t2 class = "cool" >Extra
+            <t2 class = "cool" >Combat
                 <hr>
 
             <button id = "button4" 
                 class = "cool button"
-                >Extra</button>
+                >Combat</button>
             
-            <t2 class = "cool modDesc">Extra</t2>
+            <t2 class = "cool modDesc">Combat</t2>
         </div>
       
     </div>
@@ -101,9 +303,9 @@
         <div class = "imgs" style = "text-align: center; background-color:rgb(196, 196, 196); height: 160px;" id="prog">
             
             
-            <img class = "" src="Images/Stomach.png" width="120px" height="120px">
-            <img class = "" src="Images/Lungs.png" width="125px" height="125px">
-            <img class = "" src="Images/Brain.png" width="125px" height="125px">
+            <img class = "" src="https://i.ibb.co/HpNs281/Stomach.png" width="120px" height="120px">
+            <img class = "" src="https://i.ibb.co/VB90m7K/Lungs.png" width="125px" height="125px">
+            <img class = "" src="https://i.ibb.co/Jjbc87w/Brain.png" width="125px" height="125px">
             
 
         </div>
