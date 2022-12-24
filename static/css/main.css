@@ -47,7 +47,9 @@ body {
 }
 
 .cool {
-    margin-left: 5px; margin-top: 5px; font-family:'Times New Roman'
+    margin-left: 5px; 
+    margin-top: 5px; 
+    font-family:'Times New Roman'
 }
 
 .module {
@@ -71,12 +73,23 @@ body {
 
 
 .top {
-  height: 50px;
-  background-color: rgb(0, 0, 0);
-  width: 66.666%;
+    height: 50px;
+    background-color: rgb(0, 0, 0);
+    width: 66.666%;
+    margin-left: 5px;
 }
 
 .tank {
-  background-color: rgb(0, 0, 0);
-  
+    background-color: rgb(0, 0, 0);
+    background-color:rgb(123, 123, 123);
+    float:right;
+    width: 33.333%;
+    height: 700px;
+}
+
+.progressBar {
+    height:12px;
+    width:1%;
+    border: 1px outset black;  
+    background-color: white;
 }
