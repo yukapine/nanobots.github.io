@@ -1,3 +1,4 @@
 # nano-bots
 
-Game Nano-Bots -- Created by Yuka Pine
+WIP game by Jackson Pine
+Built using Javascript, HTML 5, and CSS
