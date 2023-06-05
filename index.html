@@ -7,352 +7,296 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
+    <link href="//db.onlinewebfonts.com/c/e7a96e9e23ebdeb78591f826ce78ca96?family=pix+Chicago" rel="stylesheet" type="text/css"/>
+
     <title>Nan0B0ts</title>
 
 </head>
 
 <body>
 
-<script>
-
-// DOM Load
-
-var replicationElement = document.getElementById('repli');
-var matterElement = document.getElementById('scapr');
-var extraElement = document.getElementById('extra');
-
-// Variables
-var ticks = 0;
-
-var totalBots = 0;
-var numClickers = 0;
-var numProteins = 1000;
-var computingPower = 0;
-
-var numWhiteCells = 0;
-
-var totalMatterScraped = 0;
-// Implement White Blood Cell Events
-
-var timeSet = 1000;
-var repCost = 5
-var scrapeCost = 7
-
-
-var intervalID;
-var blinkCounter = 0;
-
-
-
-// Flags
-var milestoneFlag = 0;
-
-var replicationFlag = 0;
-var matterFlag = 0;
-var extraFlag = 0;
-var cellFlag = 0;
-
-
-
-function addBot(number) {
-    if (numProteins >= 2) {
-        totalBots += number;
-        numProteins -= 2;
-        // Fix This Later
-        if (totalBots % 10 == 0) {
-            computingPower ++;
-            progressBarUpdate('powerBar', 5)
-        }
-    }
-}  
-
-function update() {
-    document.getElementById("replicators").innerHTML = numClickers;
-    document.getElementById("repCost").innerHTML = repCost;
-    document.getElementById("bots").innerHTML = totalBots;
-    document.getElementById("proteins").innerHTML = numProteins;
-    document.getElementById("computing").innerHTML = computingPower;
-
-    
-}
-
-
-function elemUpdate() {
-    replicationElement = document.getElementById('repli');
-    matterElement = document.getElementById('scapr');
-    extraElement = document.getElementById('extra');
-    
-    if (replicationFlag == 0){        
-        blink(replicationElement);
-        replicationElement.style.display="none";
-    } else {
-        replicationElement.style.display="";   
-    }    
-
-    if (matterFlag == 0){        
-        blink(matterElement);
-        matterElement.style.display="none";
-    } else {
-        matterElement.style.display="";   
-    }    
-
-    if (extraFlag == 0){        
-        blink(extraElement);
-        extraElement.style.display="none";
-    } else {
-        extraElement.style.display="";   
-    }    
-}
-
-
-// BLINK
-
-function blink(element){
-
-    { 
-        var handle = setInterval(function () { toggleVisibility(element)}, 30);    
-    }
-
-    function toggleVisibility(element){
-        blinkCounter = blinkCounter+1;    
-
-        if (blinkCounter >= 8){
-            clearInterval(handle);
-            blinkCounter = 0;
-            element.style.visibility = "visible";
-        } else {
-            if (element.style.visibility != "hidden"){
-                element.style.visibility = "hidden";
-            } else {
-                element.style.visibility = "visible";    
-            }
-        }   
-}
-    
-}
-
-// MAIN LOOP
-
-window.onload = function() {
-  update();
-  elemUpdate();
-};
-
-window.setInterval(function(){
-
-    ticks = ticks + 1;
-    update();
-    elemUpdate();
-
-    if (totalBots >= 15){
-        extraFlag = 1;
-    }
-
-    if (totalBots >= 10){
-        replicationFlag = 1;
-    }
-
-    if (totalBots >= 5){
-        matterFlag = 1;
-    }
-
-    if (totalMatterScraped > 10000){
-        cellFlag = 1;
-    }
-
-}, 10);
-
-// Functions
-
-function addClicker() {
-    // add a new autoclicker
-    if (repCost <= computingPower && numProteins > 20) {
-        clearInterval(intervalID);
-        timeSet = 1000 - numClickers * 10;
-        numClickers ++;
-        
-
-        computingPower -= repCost;
-        progressBarUpdate('powerBar', -repCost * 5)
-        numProteins -= 20;
-        repCost = Math.round(repCost * 1.2);
-        
-        
-        intervalID = window.setInterval(function() {addBot(1);}, timeSet);
-    }
-}
-
-function scrape() {
-    if (computingPower >= scrapeCost) {
-        computingPower -= scrapeCost;
-        progressBarUpdate('powerBar', -scrapeCost * 5)
-        numProteins += 1000;
-        
-    }
-
-}
-var width = 1;
-
-function progressBarUpdate(x, num) {
-    var elem = document.getElementById(x);
-    
-    if (width >= 100) {
-            width = 1;
-            elem.style.width = width + '%';
-    } else {
-            width += num;
-            elem.style.width = width + '%';
-    }
-}
-
-
-
-</script>
-
-
-<div id="tank" class="tank">
-
-    <canvas>
-
-    </canvas>
-   
+<div class = "header">
+    <div class="top" style="font-size: 15px; border-top: 0;">
+        <img src="https://i.ibb.co/B4ZC5Pn/Nano-ICON.png" style="float:left; margin-left: 10px; margin-top: 5px; width:25px; height: 25px;">
+        <p class="topBar">File</p>
+        <p class="topBar">Edit</p>
+        <p class="topBar">View</p>
+        <p class="topBar">Special</p>
+    </div>
 </div>
 
+<div style="height:25px; background-color: white; margin-top: 20px; border: 4px outset black; position: relative; width: 98%; margin-left: auto; margin-right: auto;" id="pageTop">
+    <hr class="topLines" style="margin-top: 1px;">
+    <hr class="topLines">
+    <hr class="topLines">
+    <hr class="topLines">
+    <hr class="topLines">
+    
+    <div style="position: absolute; top: 4px; margin-left: 620px; background-color: white; z-index:1; font-size: 13.5px;">Control Panel</div>
+</div>
 
-<div class = "row">
+<div style="border: 3px solid black; width: 98%; margin-left: 10px; margin-bottom: 4px; border-top: 0;">
+<div class = "row" style="width: 100%;  border: 2px solid white;">
 
-    <div class = "header">
-        <div>
-            <p class="top"></p>
-        </div>
-    </div>
+    <div class = "column one">
+        
+        <div id="combatSliderContainer" class="nodeContainer" style="height: 300px; width: 100%; ">
+ 
+            <div class="combatSlider" id="combatSlider">
+                <div id="topicon" style="margin-left: 68px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/60/60564.png" style="height: 20px; width: 20px;">
+                </div>
 
-    <div class = "column" id = "columnOne" style="background-color:rgb(196, 196, 196);">
-
-        <div class = "bots" style="height: 140px;" id="none">
-
-            <h2 style = "margin-left: 5px; font-family:'Times New Roman'">NanoBots: <span id="bots">0</span></h2>
-            <hr>
-            
-            <t2 class = "cool" >Avalible Power: <span id="computing">0</span>
+                <input type="range" min="0" max="100" value="50" id="combatSliderElement">
                 
-            </t2>
+                <div id="bottomicon" style="margin-left: 68px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/25/25623.png" style="height: 20px; width: 20px;">
+                </div>
 
-            <div id="powerProgress" style="width: 70%; float:right; margin-right: 5px; margin-top: 2.5px;">
-                <div id="powerBar" class="progressBar"></div>
             </div>
 
-            
-
-            <div></div>
-            <button id = "button1" class = "cool"
-                onclick = "addBot(1)">Replicate</button>
         </div>
-    
+
+        <div id="eyeelement">
+            <div id="pupil"></div>
+        </div>
         
+        <div class="nodeContainer alertnessElementContainer" style="height: 315px; ">
+            <div id="alertnessElement">
+                <button id = "proteinBuffButton"  onclick = "handleBuffElement()" style="margin-left: 3px; margin-top: 5px;">Power Cost: 100</button>
+                <div style="background-color:rgb(133, 133, 133); height: 220px; width: 25px; margin-left: 10px; margin-top: 17px; float: left;">
+                    <div class="prog" id="0"></div>
+                    <div class="prog" id="1"></div>
+                    <div class="prog" id="2"></div>
+                    <div class="prog" id="3"></div>
+                    <div class="prog" id="4"></div>
+                    <div class="prog" id="5"></div>
+                    <div class="prog" id="6"></div>
+                    <div class="prog" id="7"></div>
+                    <div class="prog" id="8"></div>
+                    <div class="prog" id="9"></div>
+                </div>
+                <div id="scrambleElementText"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class = "column two">
+
+        <div class="nodeContainer botContainer" >
+            <div class = "bots">
+
+                <h2 style = "margin-left: 5px;">NanoBots: <span id="bots">0</span></h2>
+                <div id="nanoProgress" style="width: 87%; float: right; margin-top: -12px; margin-right:10px">
+                    <div id="nanoBar" class="progressBar"></div>
+                </div>
+                <p style = "margin-left: 5px; font-size: 10px; margin-top:-15px;">Level: <span id="level">0</span></p>
+
+                <hr>
+                
+                <t2 class = "text1" >Avalible Power: <span id="computing">0</span> w</t2>
+
+                <div id="powerProgress" style="width: 75%; float:right; margin-right: 5px; margin-top: 2.5px;">
+                    <div id="powerBar" class="progressBar"></div>
+                </div>
+
+                
+                <div></div>
+                <button id = "button1" class = "text1"
+                    onclick = "addBot(1, true)">Replicate</button>
+
+            </div>
+        </div>
+
         
-        <div class = "module" id="repli">
+        <div class="row">
             
-                <t2 class = "cool" >Replication
-                    <hr>
-                </t2>
+            <div class="column nodeContainer" style="height: 540px; ">
+                <div id="columnInnerContainer" style="width: 98%">
+                    <div class = "module" id="repli">
+                
+                        <t2 class = "text1" >Replication
+                            <div id="repliProgress" style="width: 70%; float:right; margin-right: 5px; margin-top: 2.5px;">
+                                <div id="repliBar" class="progressBar"></div>
+                            </div>
+                            <hr>
+                        </t2>
+                            
+                        <button 
+                            id = "button2" 
+                            class = "text1 button" 
+                            onclick = "addClicker()">Create NanoBot Replicator
+                        </button>
+
+                        <t2 class = "text1"><span id="replicators">0</span></t2>
+        
+                        <t2 class = "text1 modDesc" style="margin-right: 10px;">Power Cost: <span id="repCost">5</span></t2>
+                        <t1 class = "text1 modDesc">Protein Cost: 20</t1>
+
+                    </div>
+        
+                    <div class = "module" id="scapr">
+                        <div></div>
+                        <t2 class = "text1" >Matter</t2>
+            
+                        <div id="scrapeProgress" style="width: 70%; float:right; margin-right: 5px; margin-top: 2.5px;">
+                            <div id="scrapeBar" class="progressBar"></div>
+                        </div>
+            
+                        <hr>
+            
+                        <button id = "button3" 
+                            class = "text1 button"
+                            onclick = "scrape()">Scrape Proteins
+                        </button>
+                        
+                        <t2 class = "text1 modDesc" style="margin-right: 10px;">Power Cost: <span id="scrapeCost">7</span></t2>
+                        <t2 class = "text1 modDesc">Available Matter: <span id="proteins">0</span></t2>
+                    </div>
+        
+                    <div class = "module" id="combat">
+                        <div></div>
+                        <t2 class = "text1" >Combat</t2>
+                        <hr>
+
+                        <div>
+                            <p style="float: left; margin-left: 3px;">Bots</p>
+
+                            <div id="combatProgress" style="width: 75%; float:left; margin-left: 20px; margin-top: 18px; background-color: black;">
+                                <div id="combatBar" class="progressBar" ></div>
+                            </div>
+
+                            <p style="float: right; margin-right: 3px;">Cells</p>
+
+                            <div>Alarm State: <span id="alarm">0</span></div>
+                            <div>White Cells: <span id="numWhiteCells">0</span></div>
+                        </div>
+                        
+                    </div>
+                </div>
+          
+            </div>
+            
+            <div class="column">
+                <div id='upgradeElem' class="row" style=" height: 540px;">
+
+                    <div class = "project_column nodeContainer" style="width:235px; height: 100%;">
+                        <div id="upgradeContainer" class="" style="top:10px; overflow-y: scroll; overflow-x: hidden; height: 500px;">
+                            <p style="text-align: center;" >Modules</p>
+                            <hr>
+            
+                        </div>
+                        
+                    </div>
                     
-                    <button 
-                        id = "button2" 
-                        class = "cool button" 
-                        onclick = "addClicker()">Create NanoBot Replicator
-                    </button>
-                    <t2 class = "cool" style = "align-items: center;"><span id="replicators">0</span></t2>
+                    <div class = "project_column nodeContainer" style="width:150px;  height: 200px;">
 
-            <t2 class = "cool modDesc">Power Cost: <span id="repCost">5</span></t2>
-            <t1 class = "cool modDesc">Protein Cost: 20</t1>
-
+                        <div id="modcontainercontainer" style="margin-left: 0; width: 135px;">
+                            <p style="text-align: center;">Module Fabricator</p>
+                            <hr>
             
-            
-        </div>
+                            <div class="modcontainer" id="modFabricator" style="margin-left:auto;margin-right:auto;margin-top: 15px;">
+                                
+                            </div>
 
-        <div class = "module" id="scapr">
-            <div></div>
-            <t2 class = "cool" >Matter
-                <hr>
+                            <div style="text-align: center; margin-top: 5px;">
+                                <div>Cost: 100 w</div>
+                                <button id="fabricateButton" onclick="purchaseModule()">Fabricate</button>
+                            </div>
+                        </div>
 
-            <button id = "button3" 
-                class = "cool button"
-                onclick = "scrape()">Scrape Proteins</button>
-            
-            <t2 class = "cool modDesc">Power Cost: <span id="scrapeCost">7</span></t2>
-            <t2 class = "cool modDesc">Available Matter: <span id="proteins">0</span></t2>
-        </div>
-
-        <div class = "module" id="extra">
-            <div></div>
-            <t2 class = "cool" >Combat
-                <hr>
-
-            <button id = "button4" 
-                class = "cool button"
-                >Combat</button>
-            
-            <t2 class = "cool modDesc">Combat</t2>
-        </div>
-      
-    </div>
-
-    <div class = "column" id = "columnTwo" style="background-color:rgb(237, 237, 237);">
-
-        <div class = "imgs" style = "text-align: center; background-color:rgb(196, 196, 196); height: 160px;" id="prog">
-            
-            
-            <img class = "" src="https://i.ibb.co/HpNs281/Stomach.png" width="120px" height="120px">
-            <img class = "" src="https://i.ibb.co/VB90m7K/Lungs.png" width="125px" height="125px">
-            <img class = "" src="https://i.ibb.co/Jjbc87w/Brain.png" width="125px" height="125px">
-            
-
-        </div>
-       
-
-        <div class="row" style="margin-top: 0px; height: 500px">
-            <div class = "project_column">
-                <t1 style="padding:3px;">Objectives</t1>
-                <hr>
-                    <div class="project">
-                        <p class="project_text">Project 1</p>
+                        <div id="modstoragecontainer" style="height:310px; width: 136px; background-color:grey; margin-top: 200px; margin-left: 15px;">
+                            <div id="modstorage"></div>
+                            
+                        </div>
+        
                     </div>
-
-                    <div class="project">
-                        <p class="project_text">Project 2</p>
-                    </div>
-
-                    <div class="project">
-                        <p class="project_text">Project 3</p>
-                    </div>
+        
+                </div>
+        
             </div>
-            
-            <div class = "project_column">
-                <t1 style="padding:3px;">Upgrades</t1>
-                <hr>
 
-                <div class="project">
-                    <p class="project_text">Upgrade 1</p>
-                </div>
-
-                <div class="project">
-                    <p class="project_text">Upgrade 2</p>
-                </div>
-
-                <div class="project">
-                    <p class="project_text">Upgrade 3</p>
-                </div>
-
-            </div>
         </div>
         
     </div>
 
-    
+        
 
+    <div class = "column three">
+        <div class="nodeContainer" style="height: 175px; width: 462px; ">
+            
+            <div id="humanBody" class="innerNodeContainer border">
+                <img id="human" src="https://i.ibb.co/QCJSkrh/Human-Body.png" width="380px" height="210px" draggable="false" style="margin-top: -23px;">
+                <div id="consoleElement">
+                    <div id="consoleTxt" style="margin-left:5px; margin-top:5px; color: white;">> </div>
+                </div>
+            </div>
+    
+        </div>
+
+        <div class="nanoBotVisualizer nodeContainer" style="height: 540px; width: 439px; ">
+
+            <div id="outerContainer" class="border" style="height: 95%; width: 98%; position: absolute; top: 10px; left: 15px; background-color: rgb(108, 108, 108);">
+
+                <div id="nanoBotContainer" style="position: relative;">
+
+                    <div style="position:absolute; z-index:1;">
+                        <div>
+                            <div class="modcontainer left" id="target1" style="margin-top: 98px;">
+                            </div>
+                            <div class=" modcontainer right" id="target4" style="margin-top: 98px;">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class=" modcontainer left" id="target2" style="margin-top: 10px;">
+                            </div>
+                            <div class=" modcontainer right" id="target5" style="margin-top: 10px;">
+                            </div>
+                        </div>
+                    
+                        <div>
+                            <div class=" modcontainer left" id="target3" style="margin-top: 45px; background-color: rgb(173, 173, 173);">
+                            </div>
+                            <div class=" modcontainer right" id="target6" style="margin-top: 45px; background-color: rgb(173, 173, 173);">
+                            </div>
+                        </div>
+
+                       
+
+                    </div>
+                    <img id="nanoBotImage" style="position:relative;" src="https://i.ibb.co/HnkT59h/Nano-Bot-Frame.png" draggable="false">
+
+                    <div id="bottommodcontainer"> 
+                        <div class=" modcontainer bottom" id="target7">
+                        </div>
+
+                        <div class=" modcontainer bottom" id="target8">
+                        </div>
+
+                        <div class=" modcontainer bottom" id="target9">
+                        </div>
+
+                        <div class=" modcontainer bottom" id="target10">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    
+    </div>
 
 </div>
+</div>
+
+<div class="crt"></div>
+
+<script type="text/javascript" src="{{url_for('static', filename='projects.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='main.js')}}"></script>   
+
 
 </body>
 
