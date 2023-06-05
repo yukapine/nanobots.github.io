@@ -1,33 +1,114 @@
-body {
-    margin: 0;
-    font-family: sans-serif;
+@import url(//db.onlinewebfonts.com/c/e7a96e9e23ebdeb78591f826ce78ca96?family=pix+Chicago);
+
+@font-face {
+    font-family: "pix Chicago"; src: url("//db.onlinewebfonts.com/t/e7a96e9e23ebdeb78591f826ce78ca96.eot"); 
+    src: url("//db.onlinewebfonts.com/t/e7a96e9e23ebdeb78591f826ce78ca96.eot?#iefix") format("embedded-opentype"), 
+        url("//db.onlinewebfonts.com/t/e7a96e9e23ebdeb78591f826ce78ca96.woff2") format("woff2"), 
+        url("//db.onlinewebfonts.com/t/e7a96e9e23ebdeb78591f826ce78ca96.woff") format("woff"), 
+        url("//db.onlinewebfonts.com/t/e7a96e9e23ebdeb78591f826ce78ca96.ttf") format("truetype"), 
+        url("//db.onlinewebfonts.com/t/e7a96e9e23ebdeb78591f826ce78ca96.svg#pix Chicago") format("svg"); 
 }
 
 
+body {
+    margin: 0;
+    font-family: "pix Chicago";
+    font-size: x-small;
+
+    background-image: radial-gradient(#aeaeae 20%, transparent 20%),
+     radial-gradient(#c1c1c1 20%, transparent 20%);
+    background-position: 0px 0px, 3px 3px;
+    background-size: 6px 6px;
+    background-color: #858891;  
+    overflow-x: hidden; 
+    overflow-y: hidden;
+    border: 5px solid rgba(0, 0, 0, 1);
+    border-top: 0 solid black;
+}
+
+
+
+button {
+    font-family : inherit;
+    font-size: xx-small;
+}
+
+.text1 {
+    margin-left: 5px;
+    margin-top: 2.5px;
+}
+
 .column {
     float: left;
-    width: 33.333%;
+    width: 50%;
+    background-color: #161616;
+}
+
+.column.one {
+    width: 12%;
+}
+
+.column.two {
+    width: 55%;
+}
+
+.column.three {
+    width: 33%;
 }
 
 .project_column {
     float: left;
-    
-    width: 50%;
-    background-color:rgb(186, 186, 186);
     height: 500px;
 }
 
-.project {
-    height: 80px;
-    margin-left: 2px;
-    margin-right: 2px;
-    border: 1px outset black;   
-    background-color: white;
+.bots {
+    border-width: 3px;
+    background-color: #c1c1c1;
+    width: 98%; 
+    height: 165px;
+
+    top: 10px;
+    left: 16px;
+    position: absolute;
 }
 
-.project_text {
-    margin-left: 2px;
-    font-size: 80%;
+.botContainer {
+    height: 175px;
+    width: 100%;
+}
+
+hr {
+    border-top: 2px solid black;
+}
+
+.project {
+    border-radius: 0px;
+    margin-left: 5px;
+    display: block;
+    height: 80px;
+    width: 190px;
+    background: #a2a2a2;
+    border: 3px solid rgba(0, 0, 0, 1);
+    outline: none;
+    margin-bottom: 6px;
+}
+
+.project.selected {
+    background-color: #7b7b7b;
+    
+    background-image: radial-gradient(#404040 20%, transparent 20%),
+     radial-gradient(#484848 20%, transparent 20%);
+    background-position: 0px 0px, 2px 2px;
+    background-size: 4px 4px;
+}
+
+.project:hover {
+    background-color: #b1b0b0;
+}
+
+.projectText {
+    margin-left: 4px;
+    font-family: 'pix Chicago';
 }
   
 
@@ -37,26 +118,27 @@ body {
     clear: both;
 }
 
+
+
 .title {
     margin-top: 5px;
     margin-left: 5px;
-    border: 1px outset black;   
     text-align: left;
     text-indent: 5px;
-    font-family:'Times New Roman'
-}
-
-.cool {
-    margin-left: 5px; 
-    margin-top: 5px; 
-    font-family:'Times New Roman'
 }
 
 .module {
-    border: 1px outset black;
-    padding-top: 5px;
+    
     background-color: white;
-    padding-bottom: 5px;
+    height: 155px;
+    
+    margin-top: 10px;
+}
+
+#console {
+    background-color: #161616;
+    height: 120px;
+    
 }
 
 .modDesc {
@@ -73,23 +155,342 @@ body {
 
 
 .top {
-    height: 50px;
-    background-color: rgb(0, 0, 0);
-    width: 66.666%;
-    margin-left: 5px;
+    height: 35px;
+    background-color: rgb(255, 255, 255);
+    
+    border: 3px solid rgb(0, 0, 0);
+    
+    
 }
 
-.tank {
-    background-color: rgb(0, 0, 0);
-    background-color:rgb(123, 123, 123);
-    float:right;
-    width: 33.333%;
-    height: 700px;
+.topBar {
+    float: left;
+    margin-top: 5px;
+    margin-left: 20px;
 }
+
+.topLines {
+    margin-top: -7.5px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+#columnInnerContainer {
+    width: 100%; 
+    height: 95%;
+    
+    left: 15px;
+    position: relative;
+}
+
+#combatSliderElement {
+    -webkit-appearance: slider-vertical;
+    
+    height: 260px;
+    background-color: #767676;
+}
+
+.combatSlider {
+    background-color: #868686;
+    width: 90%; 
+    height: 95%;
+    top: 10px;
+    left: 15px;
+    position: absolute;
+    
+    display:flex;
+    flex-direction: column;
+    gap: 15px;
+
+    background-image: radial-gradient(#404040 20%, transparent 20%),
+     radial-gradient(#484848 20%, transparent 20%);
+    background-position: 0px 0px, 2px 2px;
+    background-size: 4px 4px;
+    
+}
+
+#eyeelement {
+    position: relative;
+    margin-left: 15px;
+    height: 100px;
+    width: 200px;
+    background-color: #868686;
+    
+}
+
+#pupil {
+    position:absolute;
+    transform:translate(-50%,-50%);
+    background-color: #161616;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    left:50%;
+    top:50%;
+    
+}
+
+#alertnessElement {
+    background-color: #9b9b9b;
+    height: 260px;
+    width: 100%;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+}
+
+#scrambleElementText {
+    background-color: white; 
+    height:200px; 
+    float: left; 
+    width: 90px; 
+    margin-top: 10px; 
+    margin-left: 10px;
+    font-size: 6px; 
+    overflow-wrap: break-word;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column-reverse;
+    
+}
+
+.prog {
+    height: 20px;
+    width: 25px;
+    background-color: white;
+    margin-top: 2px;
+    visibility: hidden;
+}
+
+.nodeContainer {
+    background-color: #1e1e1e;
+    position: relative;
+}
+
+.innerNodeContainer {
+    top: 10px;
+    left: 15px;
+    height: 161px;
+    width: 430px;
+    position: absolute;
+}
+
 
 .progressBar {
     height:12px;
     width:1%;
-    border: 1px outset black;  
     background-color: white;
+    border-style: outset;
 }
+
+.upgradeModule {
+    display: block;
+}
+
+.mod {
+    border: 3px solid #666;
+    background-color: rgb(183, 183, 183);
+    border-radius: .2em;
+    border-style: outset;
+    cursor: move;
+    width: 50px;
+    height: 50px;
+}
+
+.hide {
+    display: none;
+}
+
+.mod.unpurchased {
+    background-color: rgb(93, 93, 93);
+    cursor: auto;
+}
+
+.mod:hover {
+    background-color: rgb(198, 198, 198);
+}
+
+.modcontainer {
+    border: 3px solid #666;
+    width: 55px;
+    height: 55px;
+    border-style: outset;
+    background-color: #ddd;
+}
+
+.modcontainer.over {
+    border: dashed 3px rgb(43, 43, 43);
+}
+
+.modcontainer.left {
+    float: left;
+    margin-left: 128px;
+    
+}
+
+.modcontainer.right {
+    margin-left: 52px;
+    float: left;
+}
+
+.modcontainer.bottom {
+    align-self: flex-end;
+    margin-bottom: 10px;
+    
+}
+
+#upgradeContainer {
+    background-color:rgb(221, 221, 221);
+    height: 90%;
+    width: 90%;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+}
+
+#modcontainercontainer {
+    background-color:rgb(221, 221, 221);
+    height: 90%;
+    width: 90%;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+}
+
+#humanBody {
+    text-align: center; 
+    background-color:rgb(208, 208, 208); 
+    
+
+    background-image: radial-gradient(#646464 20%, transparent 20%),
+     radial-gradient(#868686 20%, transparent 20%);
+    background-position: 0px 0px, 3px 3px;
+    background-size: 6px 6px;
+    
+}
+
+#human {
+    filter: hue-rotate(90deg);
+}
+
+#consoleElement {
+    width: 100%;
+    height: 100%;
+
+    background-color: rgb(0, 0, 0);
+    text-align: left;
+    opacity: 0%;
+    
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#consoleElement.disp {
+    display: block;
+
+    -webkit-animation: fadeInFromNone 3s ease-out;
+    animation: fadeInFromNone 3s ease-out;
+}
+
+@-webkit-keyframes fadeInFromNone {
+    0% {display: none; opacity: 0;}
+
+    10% { display: block; opacity: .8;}
+
+    90% { display: block; opacity: .8;}
+
+    100% { display: block; opacity: 0;}
+}
+
+@keyframes fadeInFromNone {
+    0% {display: none; opacity: 0;}
+
+    10% { display: block; opacity: .8;}
+
+    90% { display: block; opacity: .8;}
+
+    100% { display: block; opacity: 0;}
+}
+
+
+.border {
+    border: 2px solid white;
+    position: relative;
+}
+
+.border:before {
+    position: absolute;
+    display: block;
+    content: "";
+    border: 2px solid black;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    
+}
+
+.target {
+    opacity: 0;
+}
+
+
+#nanoBotImage {
+    height:400px;
+    width: 360px;
+    display: block;
+    margin: auto;
+    margin-top: 5px;
+}
+
+#bottommodcontainer {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    background-color: #2e2e2e;
+    height: 90px;
+    width: 430px;
+    margin-top: 10px;
+}
+
+#modFabricator {
+    box-shadow: 
+        0 0 0 2px hsl(0, 0%, 50%),
+        0 0 0 6px hsl(0, 0%, 70%),
+        0 0 0 10px hsl(0, 0%, 90%);
+}
+
+
+  .crt::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(18, 16, 16, 0.1);
+    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+    animation: flicker 0.15s infinite;
+  }
+  .crt::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    opacity: 100%;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+  }
+  .crt {
+    animation: textShadow 1.6s infinite;
+  }
