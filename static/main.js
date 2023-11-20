@@ -4,7 +4,6 @@ var replicationElement = $('repli');
 var matterElement = $('scapr');
 var combatElement = $('combat');
 
-
 // Variables
 
 var ticks = 0;
@@ -15,6 +14,9 @@ var numClickers = 0;
 var numProteins = 1000;
 var computingPower = 0;
 var numWhiteCells = 0;
+var numBattles = 0;
+var baseCellDamage = 1;
+var killBuff = 1;
 var totalMatterScraped = 0;
 var botRate = 0;
 var timeSet = 1000;
@@ -24,6 +26,7 @@ var intervalID;
 var blinkCounter = 0;
 var sliderValue = 50;
 var alarmState = 1;
+var aggression = 1;
 
 var proteinBuff = 1;
 var proteinRunning = false;
@@ -86,11 +89,29 @@ var scraperUpgradeFlag1 = 0;
 //var scraperUpgradeFlag2 = 0;
 
 var combatUpgradeFlag1 = 0;
-//var combatUpgradeFlag2 = 0;
+var combatUpgradeFlag2 = 0;
 
 var batteryUpgradeFlag1 = 0;
 
 var loseFlag = 0;
+
+var modSelected = "";
+
+const debugPower = {
+    command() {
+        console.log("100 Power");
+        computingPower = 100;
+        
+    },
+};
+
+const debugBots = {
+    command() {
+        console.log("+1000 Bots");
+        totalBots += 1000;
+        
+    },
+};
 
 // Upgrades ---------------------------------------------------------------------------------------------------------------------------
 
@@ -100,6 +121,14 @@ var loseFlag = 0;
 function $(x) {
     return document.getElementById(x);
 }
+
+function getFirstChild(el){
+    var firstChild = el.firstChild;
+    while(firstChild != null && firstChild.nodeType != 1){ // skip TextNodes
+      firstChild = firstChild.nextSibling;
+    }
+    return firstChild;
+  }
 
 // MAIN LOOP ------------------------------------------------------------------------------------------------------------------------
 
@@ -111,19 +140,48 @@ window.onload = function() {
     addListeners("modcontainer");
 
     //Eye that Follows the mouse
+    
     const pupil = $('pupil');
-    const eyeBox = $('eyeelement');
-    const originx = eyeBox.clientWidth / 2;
-    const originy = eyeBox.clientHeight / 2;
-    //const distance;
-    const xfac = eyeBox.clientWidth / screen.width;
-    const yfac = eyeBox.clientHeight / screen.height;
-    const onMouseMove = (e) => {
-        //distance = e.offsetX;
-        pupil.style.left = e.offsetX + 'px';
-        pupil.style.top = e.offsetY + 'px';
+    
+    // Function to update the pupil position
+    function updatePupilPosition(event) {
+        // Get the container position and dimensions
+        const containerRect = pupil.parentElement.getBoundingClientRect();
+        const containerCenterX = containerRect.left + containerRect.width / 2;
+        const containerCenterY = containerRect.top + containerRect.height / 2;
+
+        //console.log("center of container X : " + containerCenterX);
+        //console.log("center of container Y : " + containerCenterY);
+        //console.log("parent element: " + pupil.parentElement.id);
+        //console.log("mouse pos: x: " + event.clientX + " y: " + event.clientY);
+        //console.log(containerRect.left);
+
+        // Get the cursor position relative to the container center
+        const cursorX = event.clientX - containerCenterX;
+        const cursorY = event.clientY - containerCenterY;
+
+        // Calculate the angle of the cursor relative to the container center
+        const angle = Math.atan2(cursorY, cursorX);
+
+        // Set the maximum radius the pupil can move from the center
+        const maxRadius = containerRect.width / 7;
+
+        // Calculate the distance between the pupil and the container center
+        const distance = Math.min(Math.sqrt(cursorX ** 2 + cursorY ** 2), maxRadius);
+
+
+        // Calculate the pupil position based on the angle and max radius
+        const pupilX = Math.cos(angle) * distance + containerRect.width / 2;
+        const pupilY = Math.sin(angle) * distance + containerRect.height / 2;
+
+        // Update the pupil's position
+        pupil.style.left = pupilX + 'px';
+        pupil.style.top = pupilY + 'px';
     }
-    document.addEventListener('mousemove', onMouseMove);
+
+    // Add event listener to the container to track mouse movements
+    
+    document.addEventListener('mousemove', updatePupilPosition);
     
 };
 
@@ -160,30 +218,14 @@ window.setInterval(function(){
         computingPower += ((totalBots / 10000) * (sliderValue / 100));
     }
 
-    if (totalBots >= 100){
-        // Set to 75
-        replicationFlag = 1;
-    }
-
-    if (totalBots >= 100){
-        matterFlag = 1;
-    }
-
-    if (totalMatterScraped >= 2000){
-        cellFlag = 1;
-    }
-
-    if (playerLevel == 2){
-        upgradeFlag = 1;
-    }
-
-    if (playerLevel == 1){
-        powerFlag = 1;
-    } 
 
     if (totalBots < 0) {
         totalBots = 0;
         numWhiteCells = 0;
+    }
+
+    if (totalBots >=100){
+        upgradeFlag = 1;
     }
 
     if (ticks % 1000 == 0) {
@@ -212,6 +254,7 @@ function update() {
     $("computing").innerHTML = Math.round(computingPower);
     $('numWhiteCells').innerHTML = numWhiteCells.toFixed(2);
     $('level').innerHTML = playerLevel;
+    $('battles').innerHTML = numBattles;
     //$("debugPwrInterval").innerHTML = sliderValue;
     //document.getElementById('botsPerSec').innerHTML = botRate;  
     //$("installedMod1").innerHTML = clickerUpgradeFlag1;
@@ -254,16 +297,22 @@ function elemUpdate() {
 
         if (combatUpgradeFlag1 == 0){        
             blink(combatElement);
-            blink(combatElement2);
             blink(combatElement3);
             combatElement.style.display="none";
-            combatElement2.style.display="none";
             combatElement3.style.display="none";
         } else {
             combatElement.style.display="";   
-            combatElement2.style.display="";
+            
             combatElement3.style.display="";
         }  
+
+        if (combatUpgradeFlag2 == 0){    
+            blink(combatElement2);  
+            combatElement2.style.display="none";
+        } else {
+            combatElement2.style.display="";
+        }
+        
 
         if (upgradeFlag == 0){        
             blink(upgradeElement);
@@ -299,7 +348,7 @@ function elemUpdate() {
         consoleReadout("Capacity increased at " + nextLevel + " Bots");
         nextLevel *= 5;
     }
-
+    /*
     upgrades.forEach(function(item) {
         const items = document.getElementsByClassName('mod');
         if (item.purchased != 1){
@@ -307,7 +356,7 @@ function elemUpdate() {
            //$(item.id).classList.remove('unpurchased');
         }
     });
-
+    */
     scrapeBar(numProteins);
     
 }
@@ -317,7 +366,12 @@ function handleBuffElement() {
     if (computingPower >= 0) {
 
         proteinBuff = 0;
-        //computingPower -= 100;
+        if (computingPower >= 100){
+            computingPower -= 100;
+        } else {
+            return;
+        }
+        
 
         for (let j=0; j<8; j++) {
             for (let i=0; i<10; i++) {
@@ -379,17 +433,19 @@ function displayUpgrades(upgrade) {
 }
 
 function purchaseModule() {
-    for (i=0; i<upgrades.length; i++){
-        if ($('modFabricator').querySelector('img').src == upgrades[i].icon && upgrades[i].cost()){
-            upgrades[i].purchased = 1;
-            //upgrades[i].effect();
-            //console.log('working ' + upgrades[i].purchased);
-        }
-    }   
+    // Handles purchasing mods 
+    elem = getUpgrade(modSelected);
+    modElem = $(elem.modName);
+    // Checks if the mod has the purchased flag and if the player has enough comp power
+    if (elem.purchased == 0 && computingPower >= elem.cost){
+        elem.purchased = 1;
+        computingPower -= elem.cost;
+        modElem.classList.remove("unpurchased");
+        modElem.draggable = true;
+        modElem.classList.add("purchased");
+    }
 }
     
-
-
 // Allows projects to be selectable ------------------------------------------------------------------------------------------------------------
 
 var divItems = document.getElementsByClassName("project");
@@ -400,7 +456,7 @@ function selected(item, modName, imgSrc) {
         this.clear();
         fabricator.removeChild(fabricator.firstChild);
     }
-    
+    $("ModuleCost").innerHTML = getUpgrade(modName).priceTag;
     item.classList.add("selected");
 
     const elem = document.createElement("div");
@@ -414,12 +470,26 @@ function selected(item, modName, imgSrc) {
     elem.setAttribute("id", modName);
     
     elem.classList.add("mod");
-    elem.draggable = true;
+    const upg = getUpgrade(modName);
+    // Checks if mod is purchased already. If not it adds the unpurchased class
+    if (upg.purchased == 0){
+        elem.classList.add("unpurchased");
+        upg.draggable = false;
+    } else {
+        elem.classList.add("purchased");
+        elem.draggable = true;
+    }
+    if (upg.previousUpgrade != null){ // Implement adding L3 for Level 3 upgrades
+        elem.classList.add('L2');
+    } 
+    
+    modSelected = modName;
+    
     
     fabricator.appendChild(elem);
     elem.appendChild(img);
 
-    console.log("working");
+    //console.log("working");
     addListeners(modName);
     
 }
@@ -466,10 +536,12 @@ function blink(element){
 }
 
 function whiteCellCombatCalc(){
-    whiteCellCombat = (numWhiteCells / 10) * proteinBuff;
+    whiteCellCombat = (numWhiteCells / 10) * proteinBuff * aggression;
     
 
     if (whiteCellCombat >= 100){
+        consoleReadout("White cell saturation level critical -- Reboot Sequence Initiated --");
+        numBattles += 1;
         whiteCellCombat = 0;
         loseFlag = 1;
         setTimeout(function() {
@@ -491,6 +563,15 @@ function addBot(number, playerClick) {
         // Fix This Later
     }
 }  
+
+function killCell() {
+    if (numWhiteCells > 0) {
+        numWhiteCells -= killBuff * baseCellDamage
+    } else {
+        numWhiteCells = 0
+    }
+    
+}
 
 function addClicker() {
     // adds a new autoclicker
@@ -598,20 +679,27 @@ function getUpgrade(modId){
 }
 let DragSrc;
 function handleDragStart(e) {
+    // Set Drag Source
     DragSrc = e.target.id;
-    e.dataTransfer.setData('text/plain', e.target.id);
-    setTimeout(() => {
-        e.target.classList.add('hide');
-    }, 0);
+    const mod = getUpgrade(DragSrc);
+    // Check if the module is purchased -- If purchased, hold data while dragging and hide Icon in Mod Fabricator
+    if (mod.purchased >=1){
+        e.dataTransfer.setData('text/plain', e.target.id);
+        setTimeout(() => {
+            e.target.classList.add('hide');
+        }, 0);
+    }
 }
 
 function handleDragEnd(e) {
-    console.log("DragEnd Handled for:" + e);
     e.preventDefault();
-    modules = document.querySelectorAll(".mod");
+    const modules = document.querySelectorAll(".mod");
+    const modContainers = document.querySelectorAll(".modcontainer");
+
     modules.forEach(item => item.classList.remove("hide"));
-    items = document.querySelectorAll(".modcontainer");
-    items.forEach(item => item.classList.remove('over'));
+    modContainers.forEach(item => item.classList.remove('over'));
+    // remove pointer-events for children of modcontainers so they are selectable again
+    modules.forEach((i) => i.style.pointerEvents = "");
 }
 
 function handleDragOver(e) {
@@ -621,6 +709,8 @@ function handleDragOver(e) {
 
 function handleDragEnter(e) {
     e.target.classList.add('over');
+    // Set pointer-events for children of modcontainers to be unselectable while drag takes place
+    document.querySelectorAll(".mod").forEach((i) => i.style.pointerEvents = "none");
 }
 
 function handleDragLeave(e) {
@@ -631,16 +721,17 @@ function handleDrop(e) {
     const id = e.dataTransfer.getData('text/plain');
     const draggable = $(id);
 
-    console.log("A" + DragSrc);
+    //console.log("A" + DragSrc);
 
-    if (isDroppable(DragSrc, e.target.id)){
+    if (isDroppable(DragSrc, e.target)){
         handleUpgradePlaced(DragSrc);
         e.target.appendChild(draggable);
-        draggable.classList.remove('hide');
+        draggable.classList.remove('hide'); // Is this necessary?
         return false;
     } else {
         console.log("bad return");
     }   
+    //unhides mod icon
     draggable.classList.remove('hide');
     return false;
 }
@@ -659,15 +750,30 @@ function addListeners(targetClass){
 }
 
 function isDroppable(source, target) {
+    const upgrade = getUpgrade(source)
     let targetDict = {
         1 : ['target7', 'target8', 'target9', 'target10'],
-        2 : ['target1', 'target2'],
-        3 : ['target3'],
-        4 : ['target4', 'target5'],
-        5 : ['target6']
+        2 : ['target3', 'target6'],
+        3 : ['target1', 'target2', 'target4', 'target5'],
     };
-    if (targetDict[getUpgrade(source).modType].includes(target)) {
-        getUpgrade(source).placed += 1;
+    if (targetDict[upgrade.modType].includes(target.id) && handleMultiUpgrades(source, target)) {
+        upgrade.placed += 1;
+        return true;
+    }
+    return false;
+}
+
+function handleMultiUpgrades(source, target) { // Fix upgraded mods not being swappable anymore - its fun to move them around
+    // Checks if mod in target is upgradable by held mod
+    const upgradeSource = getUpgrade(source);
+    const targetChild = getFirstChild(target);
+    if (targetChild == null){ 
+        if (upgradeSource.previousUpgrade != null) { return false; } //Simplify
+        return true; 
+        //return upgradeSource.previousUpgrade === null;
+    }
+    if (upgradeSource.previousUpgrade == targetChild.id) {
+        target.removeChild(targetChild);
         return true;
     }
     return false;
