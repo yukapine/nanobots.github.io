@@ -18,10 +18,10 @@
 <div class = "header">
     <div class="top" style="font-size: 15px; border-top: 0;">
         <img src="https://i.ibb.co/B4ZC5Pn/Nano-ICON.png" style="float:left; margin-left: 10px; margin-top: 5px; width:25px; height: 25px;">
-        <p class="topBar">File</p>
-        <p class="topBar">Edit</p>
-        <p class="topBar">View</p>
-        <p class="topBar">Special</p>
+        <div class="topBarContainer" style="margin-left:20px;">File</div>
+        <div class="topBarContainer">Edit</div>
+        <div class="topBarContainer">View</div>
+        <div class="topBarContainer" style="width: 75px;">Special</div>
     </div>
 </div>
 
@@ -58,13 +58,16 @@
         </div>
 
         <div id="eyeelement">
-            <div id="pupil"></div>
+            
+            <div id="pupil" style="z-index:auto;"></div>
+            <div style="z-index:1;" >
+                <img id="eye" src="https://i.ibb.co/r44HvcH/EYE2.png" width="140px" height="90px" draggable="false" >
+            </div>
         </div>
         
         <div class="nodeContainer alertnessElementContainer" style="height: 315px; ">
             <div id="alertnessElement">
-                <button id = "proteinBuffButton"  onclick = "handleBuffElement()" style="margin-left: 3px; margin-top: 5px;">Power Cost: 100</button>
-                <div style="background-color:rgb(133, 133, 133); height: 220px; width: 25px; margin-left: 10px; margin-top: 17px; float: left;">
+                <div style="background-color:rgb(133, 133, 133); height: 250px; width: 25px; margin-left: 10px; margin-top: 17px; float: left;">
                     <div class="prog" id="0"></div>
                     <div class="prog" id="1"></div>
                     <div class="prog" id="2"></div>
@@ -76,7 +79,14 @@
                     <div class="prog" id="8"></div>
                     <div class="prog" id="9"></div>
                 </div>
-                <div id="scrambleElementText"></div>
+                <div id="proteinScrambleContainer">
+                    <button id = "proteinBuffButton"  onclick = "handleBuffElement()" >Solve</button>
+                    <p style="display: flex; font-size: 8px; margin-left: 5px; margin-top: -1px;">Cost: 100 w</p>
+                    <div id="scrambleElementTextContainer">
+                        <div id="scrambleElementText"></div>
+                    </div>
+                    <div id="animatedDNA"></div>
+                </div>
             </div>
         </div>
 
@@ -112,10 +122,10 @@
         
         <div class="row">
             
-            <div class="column nodeContainer" style="height: 540px; ">
+            <div class="column nodeContainer" style="height: 542px; ">
                 <div id="columnInnerContainer" style="width: 98%">
-                    <div class = "module" id="repli">
-                
+                    <div class = "module" id="repli" >
+                    
                         <t2 class = "text1" >Replication
                             <div id="repliProgress" style="width: 70%; float:right; margin-right: 5px; margin-top: 2.5px;">
                                 <div id="repliBar" class="progressBar"></div>
@@ -135,7 +145,7 @@
                         <t1 class = "text1 modDesc">Protein Cost: 20</t1>
 
                     </div>
-        
+                        
                     <div class = "module" id="scapr">
                         <div></div>
                         <t2 class = "text1" >Matter</t2>
@@ -153,11 +163,19 @@
                         
                         <t2 class = "text1 modDesc" style="margin-right: 10px;">Power Cost: <span id="scrapeCost">7</span></t2>
                         <t2 class = "text1 modDesc">Available Matter: <span id="proteins">0</span></t2>
+                        
+                        <div id="stemCellModuleContainer">
+                            <div id ="stemCellModule" style="display:none">
+                                <t2>Avalible Cells: </t2>
+                                <hr>
+                            </div>
+                        </div>
+
                     </div>
         
                     <div class = "module" id="combat">
                         <div></div>
-                        <t2 class = "text1" >Combat</t2>
+                        <t2 class = "text1" >Combat | Battles: <span id="battles">0</span></t2>
                         <hr>
 
                         <div>
@@ -171,6 +189,9 @@
 
                             <div>Alarm State: <span id="alarm">0</span></div>
                             <div>White Cells: <span id="numWhiteCells">0</span></div>
+
+                            <button>Fire</button>
+                            <img id="whitecell" src="https://github.com/yukapine/nano-bots/blob/main/Images/white_cell_placeholder.png?raw=true" onclick="killCell()" width="40px" height="40px" draggable="false">
                         </div>
                         
                     </div>
@@ -201,13 +222,22 @@
                             </div>
 
                             <div style="text-align: center; margin-top: 5px;">
-                                <div>Cost: 100 w</div>
+                                <div>Cost: <span id="ModuleCost">0 w</span></div>
+                                
                                 <button id="fabricateButton" onclick="purchaseModule()">Fabricate</button>
                             </div>
                         </div>
 
                         <div id="modstoragecontainer" style="height:310px; width: 136px; background-color:grey; margin-top: 200px; margin-left: 15px;">
                             <div id="modstorage"></div>
+                            <div class="modcontainer farleft" id="target11" >
+                            </div>
+                            <div class="modcontainer farleft" id="target12" >
+                            </div>
+                            <div class="modcontainer farleft" id="target13" >
+                            </div>
+                            <div class="modcontainer farleft" id="target14">
+                            </div>
                             
                         </div>
         
