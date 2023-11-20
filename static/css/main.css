@@ -128,12 +128,15 @@ hr {
 }
 
 .module {
+    background-color: #e1e1e1;
     
-    background-color: white;
     height: 155px;
-    
+    width: 350px;
+    margin-left: 7px;
     margin-top: 10px;
+    border: 3px groove rgb(248, 246, 246);
 }
+
 
 #console {
     background-color: #161616;
@@ -159,14 +162,20 @@ hr {
     background-color: rgb(255, 255, 255);
     
     border: 3px solid rgb(0, 0, 0);
-    
+    display: flex;
     
 }
 
-.topBar {
+.topBarContainer {
     float: left;
-    margin-top: 5px;
-    margin-left: 20px;
+    margin-left: 5px;
+    width: 70px;
+    height: 35px;
+    
+}
+
+.topBarContainer:hover {
+    background-color: #adadad;
 }
 
 .topLines {
@@ -178,7 +187,7 @@ hr {
 #columnInnerContainer {
     width: 100%; 
     height: 95%;
-    
+    background-color: #666;
     left: 15px;
     position: relative;
 }
@@ -209,49 +218,110 @@ hr {
     
 }
 
+#stemCellModuleContainer {
+    border: 4px groove rgb(172, 172, 172);
+    top: 46%;
+    position: absolute;
+    margin-left: 30%;
+    height: 80px;
+    width: 200px;
+    background-color: #cdcdcd;
+}
+
+#stemCellModule {
+    border: 1px solid rgb(56, 56, 56);
+    height: 100%;
+    width: 100%;
+}
+
+#whitecell {
+    filter: brightness(1);
+}
+
+#whitecell:hover {
+   background-color: #2e2e2e;
+}
+
 #eyeelement {
     position: relative;
-    margin-left: 15px;
+    margin-left: 23px;
     height: 100px;
-    width: 200px;
+    width: 150px;
     background-color: #868686;
+    
     
 }
 
 #pupil {
-    position:absolute;
-    transform:translate(-50%,-50%);
-    background-color: #161616;
-    height: 30px;
     width: 30px;
+    height: 30px;
+    background-color: black;
     border-radius: 50%;
-    left:50%;
-    top:50%;
-    
+    position: absolute;
+    top: 50%; /* Center the pupil vertically */
+    left: 50%; /* Center the pupil horizontally */
+}
+
+#eye {
+    box-shadow: 
+        0 0 0 2px hsl(0, 0%, 50%),
+        0 0 0 6px hsl(0, 0%, 11%),
+        0 0 0 10px hsl(0, 0%, 65%);
 }
 
 #alertnessElement {
     background-color: #9b9b9b;
-    height: 260px;
+    height: 290px;
     width: 100%;
     position: absolute;
     top: 10px;
     left: 15px;
 }
 
-#scrambleElementText {
-    background-color: white; 
-    height:200px; 
-    float: left; 
-    width: 90px; 
+#proteinScrambleContainer {
+    
+    width: 100px;
+    height: 400px;
+    display: flex;
+    flex-flow: column;
+    
+}
+
+#proteinBuffButton {
+    margin-left: 3px;
+    margin-top: 5px;
+    display: flex;
+    text-align: center;
+    
+}
+
+#scrambleElementTextContainer {
+    display: flex;
     margin-top: 10px; 
     margin-left: 10px;
+    height:100px; 
+    width: 90px;
+}
+
+#scrambleElementText {
+    background-color: white; 
+    height:100px; 
+    width: 90px; 
     font-size: 6px; 
     overflow-wrap: break-word;
     overflow-y: hidden;
     display: flex;
     flex-direction: column-reverse;
-    
+}
+
+#animatedDNA {
+    background-color: white; 
+    height:100px; 
+    float: left; 
+    width: 90px; 
+    margin-top: 10px; 
+    margin-left: 10px;
+    display: flex;
 }
 
 .prog {
@@ -287,7 +357,7 @@ hr {
     display: block;
 }
 
-.mod {
+.mod.purchased {
     border: 3px solid #666;
     background-color: rgb(183, 183, 183);
     border-radius: .2em;
@@ -297,16 +367,30 @@ hr {
     height: 50px;
 }
 
+.mod.unpurchased {
+    border: 3px solid #666;
+    filter: brightness(0.5);
+    border-radius: .2em;
+    border-style: outset;
+    width: 50px;
+    height: 50px;
+    background-color: rgb(118, 118, 118);
+    cursor: auto;
+}
+
+.mod.L2 {
+    border: 3px solid rgb(236, 84, 41);
+}
+
+.mod.L3 {
+    border: 3px solid rgb(5, 8, 75);
+}
+
 .hide {
     display: none;
 }
 
-.mod.unpurchased {
-    background-color: rgb(93, 93, 93);
-    cursor: auto;
-}
-
-.mod:hover {
+.mod.purchased:hover {
     background-color: rgb(198, 198, 198);
 }
 
@@ -337,6 +421,11 @@ hr {
     align-self: flex-end;
     margin-bottom: 10px;
     
+}
+
+.modcontainer.farleft {
+    margin-bottom: 10px;
+    margin-left: 27%;
 }
 
 #upgradeContainer {
