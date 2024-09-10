@@ -112,6 +112,40 @@ hr {
 }
   
 
+#loading-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(164, 164, 164);
+    background-image: radial-gradient(#646464 20%, transparent 20%),
+     radial-gradient(#868686 20%, transparent 20%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+  
+.spinner {
+border: 16px solid #f3f3f3; 
+border-top: 16px solid #232323;
+border-radius: 50%;
+width: 120px;
+height: 120px;
+animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+/* Hide Body Content */
+#main-content {
+display: none;
+}
+
 .row:after {
     content: "";
     display: table;
@@ -131,7 +165,7 @@ hr {
     background-color: #e1e1e1;
     
     height: 155px;
-    width: 350px;
+    width: 95%;
     margin-left: 7px;
     margin-top: 10px;
     border: 3px groove rgb(248, 246, 246);
@@ -260,7 +294,7 @@ hr {
 
 #eyeelementcontainer {
     position: relative;
-    margin-left: 23px;
+    margin-left: 18%;
     top: 2px;
     height: 100px;
     width: 150px;
@@ -423,6 +457,12 @@ hr {
 
 .mod.purchased:hover {
     background-color: rgb(198, 198, 198);
+}
+
+.mod-container-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 33%;
 }
 
 .modcontainer {
