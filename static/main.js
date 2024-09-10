@@ -3,6 +3,10 @@
 var replicationElement = $('repli');
 var matterElement = $('scapr');
 var combatElement = $('combat');
+var stemCellElement = $('stemCellModule');
+var eyeElement = $('eyeelementcontainer');
+var fabricatorElement = $('modcontainercontainer');
+var modStorageElement = $('modstorage');
 
 // Variables
 
@@ -79,6 +83,10 @@ var matterFlag = 0;
 var cellFlag = 0;
 var upgradeFlag = 0;
 var powerFlag = 0;
+var stemFlag = 0;
+var eyeFlag = 0;
+var storageFlag = 0;
+var fabricatorFlag = 0;
 
 var clickerUpgradeFlag1 = 0;
 //var clickerUpgradeFlag2 = 0;
@@ -146,6 +154,8 @@ window.onload = function() {
     // Function to update the pupil position
     function updatePupilPosition(event) {
         // Get the container position and dimensions
+        //console.log(pupil.parentElement.getBoundingClientRect())
+        //console.log(pupil.parentElement.getBoundingClientRect())
         const containerRect = pupil.parentElement.getBoundingClientRect();
         const containerCenterX = containerRect.left + containerRect.width / 2;
         const containerCenterY = containerRect.top + containerRect.height / 2;
@@ -157,25 +167,34 @@ window.onload = function() {
         //console.log(containerRect.left);
 
         // Get the cursor position relative to the container center
-        const cursorX = event.clientX - containerCenterX;
-        const cursorY = event.clientY - containerCenterY;
+        const cursorX = event.clientX - containerCenterX-10; // +4
+        console.log(cursorX);
+        const cursorY = event.clientY - containerCenterY-6; // +4
+        console.log(cursorY);
 
         // Calculate the angle of the cursor relative to the container center
         const angle = Math.atan2(cursorY, cursorX);
 
         // Set the maximum radius the pupil can move from the center
-        const maxRadius = containerRect.width / 7;
+        //const maxRadius = containerRect.width/2;
+        const maxRadius = 40;
+        const maxXRadius = 50;
+        const maxYRadius = 20;
+        
 
         // Calculate the distance between the pupil and the container center
         const distance = Math.min(Math.sqrt(cursorX ** 2 + cursorY ** 2), maxRadius);
-
+        const distanceX = Math.min(Math.sqrt(cursorX ** 2 + cursorY ** 2), maxXRadius);
+        const distanceY = Math.min(Math.sqrt(cursorX ** 2 + cursorY ** 2), maxYRadius);
 
         // Calculate the pupil position based on the angle and max radius
-        const pupilX = Math.cos(angle) * distance + containerRect.width / 2;
-        const pupilY = Math.sin(angle) * distance + containerRect.height / 2;
+        const pupilX = Math.cos(angle) * distanceX + containerRect.width / 2;
+        const pupilY = Math.sin(angle) * distanceY + containerRect.height / 2;
 
         // Update the pupil's position
+        //pupil.style.left = pupilX + 'px';
         pupil.style.left = pupilX + 'px';
+        //pupil.style.top = pupilY + 'px';
         pupil.style.top = pupilY + 'px';
     }
 
@@ -216,6 +235,10 @@ window.setInterval(function(){
 
     if (loseFlag == 0 && powerFlag == 1 && computingPower <= powerCap){
         computingPower += ((totalBots / 10000) * (sliderValue / 100));
+    }
+
+    if (stemFlag == 1){
+        blink()
     }
 
 
@@ -280,20 +303,25 @@ function elemUpdate() {
         sliderValue = $('combatSliderElement').value;
     };
 
-    function blinkToggle() {
-        if (replicationFlag == 0){        
-        blink(replicationElement);
-        replicationElement.style.display="none";
-        } else {
-            replicationElement.style.display="";   
-        }    
+    function handleBlinkFlag(flag, el) {
+        if (flag == 0){        
+            blink(el);
+            el.style.display="none";
+            } else {
+                el.style.display="";   
+            }  
+    }
 
-        if (matterFlag == 0){        
-            blink(matterElement);
-            matterElement.style.display="none";
-        } else {
-            matterElement.style.display="";   
-        }    
+    function blinkToggle() {
+
+        handleBlinkFlag(replicationFlag, replicationElement);
+        handleBlinkFlag(matterFlag, matterElement);
+        handleBlinkFlag(combatUpgradeFlag2, combatElement2);
+        handleBlinkFlag(upgradeFlag, upgradeElement);
+        handleBlinkFlag(stemFlag, stemCellElement);
+        handleBlinkFlag(eyeFlag, eyeElement);
+        handleBlinkFlag(fabricatorFlag, fabricatorElement);
+        handleBlinkFlag(storageFlag, modStorageElement);
 
         if (combatUpgradeFlag1 == 0){        
             blink(combatElement);
@@ -302,27 +330,11 @@ function elemUpdate() {
             combatElement3.style.display="none";
         } else {
             combatElement.style.display="";   
-            
             combatElement3.style.display="";
         }  
-
-        if (combatUpgradeFlag2 == 0){    
-            blink(combatElement2);  
-            combatElement2.style.display="none";
-        } else {
-            combatElement2.style.display="";
-        }
-        
-
-        if (upgradeFlag == 0){        
-            blink(upgradeElement);
-            upgradeElement.style.display="none";
-        } else {
-            upgradeElement.style.display=""; 
-        }
     }
 
-    //blinkToggle();
+   //blinkToggle();
 
     // tie protein unscrambler to the better scraper module
     // blink in the scraper and repli modules seperately
@@ -419,9 +431,11 @@ function displayUpgrades(upgrade) {
     upgradeListTopElement.appendChild(upgrade.element, upgradeListTopElement.firstChild);
     
     var span = document.createElement("span");
+    var line = document.createElement("hr");
     upgrade.element.appendChild(span);
     var title = document.createTextNode(upgrade.title);
     span.appendChild(title);    
+    span.appendChild(line);
     var div = document.createElement("div");
     upgrade.element.appendChild(div);
     var description = document.createTextNode(upgrade.description);
@@ -568,7 +582,7 @@ function killCell() {
     if (numWhiteCells > 0) {
         numWhiteCells -= killBuff * baseCellDamage
     } else {
-        numWhiteCells = 0
+        numWhiteCells = 1;
     }
     
 }
@@ -755,6 +769,7 @@ function isDroppable(source, target) {
         1 : ['target7', 'target8', 'target9', 'target10'],
         2 : ['target3', 'target6'],
         3 : ['target1', 'target2', 'target4', 'target5'],
+        4 : ['target11', 'target12', 'target13', 'target14']
     };
     if (targetDict[upgrade.modType].includes(target.id) && handleMultiUpgrades(source, target)) {
         upgrade.placed += 1;
