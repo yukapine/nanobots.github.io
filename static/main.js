@@ -121,6 +121,15 @@ const debugBots = {
     },
 };
 
+// Page loading Screen
+window.addEventListener('load', function() {
+    var loadingScreen = document.getElementById('loading-screen');
+    loadingScreen.style.display = 'none';
+    // Display Main content
+    var mainContent = document.getElementById('main-content');
+    mainContent.style.display = 'block';
+  });
+
 // Upgrades ---------------------------------------------------------------------------------------------------------------------------
 
 
@@ -148,23 +157,14 @@ window.onload = function() {
     addListeners("modcontainer");
 
     //Eye that Follows the mouse
-    
     const pupil = $('pupil');
     
     // Function to update the pupil position
     function updatePupilPosition(event) {
         // Get the container position and dimensions
-        //console.log(pupil.parentElement.getBoundingClientRect())
-        //console.log(pupil.parentElement.getBoundingClientRect())
         const containerRect = pupil.parentElement.getBoundingClientRect();
         const containerCenterX = containerRect.left + containerRect.width / 2;
         const containerCenterY = containerRect.top + containerRect.height / 2;
-
-        //console.log("center of container X : " + containerCenterX);
-        //console.log("center of container Y : " + containerCenterY);
-        //console.log("parent element: " + pupil.parentElement.id);
-        //console.log("mouse pos: x: " + event.clientX + " y: " + event.clientY);
-        //console.log(containerRect.left);
 
         // Get the cursor position relative to the container center
         const cursorX = event.clientX - containerCenterX-10; // +4
@@ -181,7 +181,6 @@ window.onload = function() {
         const maxXRadius = 50;
         const maxYRadius = 20;
         
-
         // Calculate the distance between the pupil and the container center
         const distance = Math.min(Math.sqrt(cursorX ** 2 + cursorY ** 2), maxRadius);
         const distanceX = Math.min(Math.sqrt(cursorX ** 2 + cursorY ** 2), maxXRadius);
@@ -192,9 +191,7 @@ window.onload = function() {
         const pupilY = Math.sin(angle) * distanceY + containerRect.height / 2;
 
         // Update the pupil's position
-        //pupil.style.left = pupilX + 'px';
         pupil.style.left = pupilX + 'px';
-        //pupil.style.top = pupilY + 'px';
         pupil.style.top = pupilY + 'px';
     }
 
@@ -240,7 +237,6 @@ window.setInterval(function(){
     if (stemFlag == 1){
         blink()
     }
-
 
     if (totalBots < 0) {
         totalBots = 0;
