@@ -266,6 +266,39 @@ var upgrade9 = {
 
 upgrades.push(upgrade9);
 
+var upgrade10 = {
+    id: "upgrade10",
+    title: "Stem Cells",
+    priceTag: "1000 w",
+    description: "Begin Harvesting Stem Cells",
+    console: "Module Installed ------- Stem Cell Harvester Online",
+    icon: "https://i.ibb.co/phyPsFM/Stem-Cell-Icon.png",
+    modName : "mod9",
+    modType : 4,
+    placed : 0,
+    previousUpgrade: null,
+    
+    trigger: function(){return totalBots>=200},
+    uses: 1,
+    purchased: 0,
+    cost: 10,
+    element: null,
+    effect: function(){
+        upgrade10.element.parentNode.removeChild(upgrade10.element);
+        consoleReadout(upgrade10.console);
+        console.log("upgrade 10 placement handled");
+        stemFlag = 1;
+
+        //var index = activeProjects.indexOf(project1);
+        //activeProjects.splice(index, 1);
+    }
+}
+
+upgrades.push(upgrade10);
+
+
+
+
 //Other Upgrades:
 //1.Captcha Solver
 //2.Immune Suppressant
